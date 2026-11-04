@@ -45,3 +45,14 @@ variable "notify_to" {
   type        = string
   default     = "info@simpleciso.ai"
 }
+
+variable "use_eip" {
+  description = <<-EOT
+    Allocate an Elastic IP for a permanent address. Default false because the
+    account is currently at its EIP quota — the box uses its auto-assigned public
+    IP instead (stable while the instance stays running; changes only on
+    stop/start). Set true once an EIP is free or the quota is raised, then apply.
+  EOT
+  type        = bool
+  default     = false
+}

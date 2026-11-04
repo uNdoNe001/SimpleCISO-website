@@ -174,7 +174,12 @@ resource "aws_instance" "box" {
 }
 
 resource "aws_eip" "box" {
+  count    = var.use_eip ? 1 : 0
   domain   = "vpc"
   instance = aws_instance.box.id
   tags     = { Name = "${local.name}-eip" }
+}
+
+locals {
+  public_ip = var.use_eip ? aws_eip.box[0].public_ip : aws_instance.box.public_ip
 }
