@@ -1,0 +1,174 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Platform — SimpleCISO | AI-assisted, human-governed security program management"
+  description="The SimpleCISO platform: multi-tenant assessments, deterministic scoring with a human-review gate, a risk register fed by SimpleSec findings, an evidence vault with adequacy review, and board-ready reporting across NIST CSF, CIS, ISO 27001 and PCI DSS."
+>
+  <section class="container-tight pt-16 pb-6 max-w-3xl">
+    <span class="chip">Platform</span>
+    <h1 class="mt-4 text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.08]">
+      One governed system of record for your security program.
+    </h1>
+    <p class="mt-5 text-lg text-[color:var(--color-fg-muted)]">
+      SimpleCISO is the GRC and program side of the Summit Cyber stack. It takes technical and
+      organizational inputs and runs the full assessment-to-evidence lifecycle — with AI doing the
+      repetitive work and qualified humans accountable for every material decision.
+    </p>
+    <div class="mt-7 flex flex-wrap gap-3">
+      <a href="/contact" class="btn-primary">Request a demo</a>
+      <a href="#how" class="btn-ghost">How it works</a>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="container-tight blk" style="padding-top:48px">
+    <div class="sec-head">
+      <span class="eyebrow">Capabilities</span>
+      <h2>What's inside.</h2>
+      <p>The load-bearing pieces are built on two decisions we made on day one: strict multi-tenant
+        isolation and independent, per-organization identity.</p>
+    </div>
+    <div class="tools-grid">
+      <div class="tcard">
+        <h3><span class="ti">▦</span> Organization overview</h3>
+        <p>Material risks, tasks due and overdue, stale and expiring evidence, risks missing an owner, next review date, and open risk by severity — the whole posture on one screen.</p>
+      </div>
+      <div class="tcard">
+        <h3><span class="ti">◫</span> Provider portfolio</h3>
+        <p>Managing many clients? See them ordered by attention needed, each computed in its own tenant context. No cross-client queries, ever.</p>
+      </div>
+      <div class="tcard">
+        <h3><span class="ti">◉</span> Assessment engine <span class="soon">Milestone 1</span></h3>
+        <p>Plain-language questions map to a canonical control model and produce a deterministic, explainable score — gated by a human reviewer before any status is set.</p>
+      </div>
+      <div class="tcard">
+        <h3><span class="ti">◈</span> Risk register <span class="soon">Milestone 1</span></h3>
+        <p>Gaps and imported findings become risk candidates with owners, severity, and 30/60/90 tasks. Risk acceptance is a signed, dated human decision.</p>
+      </div>
+      <div class="tcard">
+        <h3><span class="ti">▤</span> Evidence vault <span class="soon">Milestone 1</span></h3>
+        <p>Upload, review for adequacy, and track expiry. Evidence maps across frameworks, so you collect once and reuse everywhere.</p>
+      </div>
+      <div class="tcard">
+        <h3><span class="ti">◆</span> AI gateway <span class="soon">Milestone 2</span></h3>
+        <p>Provider-neutral (Claude, OpenAI, or self-hosted) behind an approval matrix. Drafts only; a human publishes. Every AI action is logged in an execution ledger.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="container-tight blk" style="padding-top:0" id="how">
+    <div class="sec-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Assess → prioritize → execute → prove.</h2>
+      <p>One lifecycle, with a human gate on every step that carries liability.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="sn">01</span><h3>Assess</h3><p>Run a plain-language assessment against a framework. Deterministic scoring — no black-box number — with a reviewer gate before status is set.</p></div>
+      <div class="step"><span class="sn">02</span><h3>Prioritize</h3><p>Gaps and SimpleSec findings become risk candidates. A human owns, accepts, or defers each. Nothing auto-closes.</p></div>
+      <div class="step"><span class="sn">03</span><h3>Execute</h3><p>Owned tasks with due dates and AI-drafted remediation guidance. Follow-ups are tracked, not forgotten.</p></div>
+      <div class="step"><span class="sn">04</span><h3>Prove</h3><p>Evidence vault with adequacy review and point-in-time snapshots. Export board and audit reports on demand.</p></div>
+    </div>
+  </section>
+
+  <!-- SIMPLESEC SYNC -->
+  <section class="container-tight blk" style="padding-top:0">
+    <div class="split">
+      <div>
+        <span class="eyebrow">SimpleSec sync</span>
+        <h2 class="mt-3 text-3xl md:text-[34px] font-extrabold tracking-tight leading-tight">Technical findings become governed risk.</h2>
+        <p class="mt-4 text-[color:var(--color-fg-muted)] text-[15.5px] leading-relaxed">
+          SimpleSec is the source of truth for offensive findings. When one flows into SimpleCISO it
+          carries a <code class="font-mono text-[13px] text-[#9fc2d8]">source_ref</code> back to the
+          finding and creates a risk <strong class="text-[color:var(--color-fg)]">candidate</strong> —
+          never an auto-closed control. The link between the pentest result and the governance decision
+          stays intact, end to end.
+        </p>
+        <div class="feat-list">
+          <div class="feat"><span class="fi">→</span><div><h4>Signed webhooks, idempotent</h4><p>Findings sync reliably without duplicates.</p></div></div>
+          <div class="feat"><span class="fi">→</span><div><h4>Finding → candidate, never → closed</h4><p>A human triages every imported risk.</p></div></div>
+          <div class="feat"><span class="fi">→</span><div><h4>Traceable provenance</h4><p>Every risk points back to the evidence that raised it.</p></div></div>
+        </div>
+      </div>
+      <div class="console">
+        <div class="con-chrome">
+          <span class="con-dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></span>
+          <span class="con-tab">sync — SimpleSec → SimpleCISO</span>
+          <span class="con-live"><span class="d"></span> LIVE</span>
+        </div>
+        <div class="con-body">
+          <div class="dash-list" style="margin-top:0">
+            <div class="dash-item"><span class="dash-sev crit">Crit</span><span>SQLi on billing API — SimpleSec #1182</span><span class="dash-status gate">New candidate</span></div>
+            <div class="dash-item"><span class="dash-sev high">High</span><span>Weak TLS on partner gateway — #1174</span><span class="dash-status gate">Needs owner</span></div>
+            <div class="dash-item"><span class="dash-sev med">Med</span><span>Verbose errors leak stack — #1169</span><span class="dash-owner">j.okafor</span></div>
+            <div class="dash-item"><span class="dash-sev med">Med</span><span>Missing rate limit on login — #1161</span><span class="dash-status ok">Task open</span></div>
+          </div>
+          <p class="mt-3 text-xs font-mono text-[color:var(--color-fg-dim)]">4 findings imported · 0 auto-closed · 4 awaiting human triage</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOVERNANCE -->
+  <section class="container-tight blk" style="padding-top:0" id="governance">
+    <div class="band">
+      <span class="chip chip-green">Governance model</span>
+      <h2 class="mt-4 text-3xl md:text-[34px] font-extrabold tracking-tight leading-tight">Accountability, by construction.</h2>
+      <p class="mt-4 text-[color:var(--color-fg-muted)] text-[15.5px] leading-relaxed max-w-[70ch]">
+        These aren't settings you can switch off — they're how the product is built.
+      </p>
+      <div class="tools-grid" style="margin-top:28px">
+        <div class="tcard">
+          <h3><span class="ti">⛉</span> Human-gated decisions</h3>
+          <p>Risk acceptance, evidence sufficiency, and publishing all require a named human. AI drafts; a person decides and signs.</p>
+        </div>
+        <div class="tcard">
+          <h3><span class="ti">⛬</span> Tenant isolation at the database</h3>
+          <p>PostgreSQL row-level security enforces separation in the database, not just the API. Tenant tables fail closed when context is unset.</p>
+        </div>
+        <div class="tcard">
+          <h3><span class="ti">◷</span> Readiness, not certification</h3>
+          <p>We say "readiness" and "evidence coverage" — never "compliant" or "certified." Terminology discipline as a liability firewall.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FRAMEWORKS -->
+  <section class="container-tight blk" style="padding-top:0" id="frameworks">
+    <div class="sec-head">
+      <span class="eyebrow">Frameworks</span>
+      <h2>Assess once, satisfy many.</h2>
+      <p>A canonical control model underneath every framework means evidence and assessment work is
+        reused, not repeated.</p>
+    </div>
+    <div class="fw-row">
+      <span class="fw">NIST CSF 2.0 <span class="st live">Built in</span></span>
+      <span class="fw">CIS Controls <span class="st live">Built in</span></span>
+      <span class="fw">ISO/IEC 27001:2022 <span class="st soon">Licensed catalog</span></span>
+      <span class="fw">PCI DSS <span class="st soon">Licensed catalog</span></span>
+    </div>
+    <p class="mt-5 text-[13.5px] text-[color:var(--color-fg-dim)] max-w-[70ch] leading-relaxed">
+      NIST CSF 2.0 and CIS are freely redistributable and ship built in. ISO/IEC 27001:2022 and PCI DSS
+      text is licensed (Summit holds the licenses); it's stored with license and provenance metadata,
+      tenant access-controlled, and kept out of third-party AI prompts and exports beyond the license
+      terms.
+    </p>
+  </section>
+
+  <!-- CTA -->
+  <section class="container-tight pb-24">
+    <div class="finalcta">
+      <span class="chip">Early access</span>
+      <h2 class="mt-4">Want the full walkthrough?</h2>
+      <p>We'll show you the lifecycle on your own frameworks and talk through where SimpleCISO fits
+        alongside the testing you already run.</p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a href="/contact" class="btn-primary">Request a demo</a>
+        <a href="https://simplesec.ai" class="btn-ghost">See SimpleSec</a>
+      </div>
+    </div>
+  </section>
+</Layout>

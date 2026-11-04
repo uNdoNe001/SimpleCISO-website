@@ -1,0 +1,29 @@
+[Unit]
+Description=SimpleCISO marketing website (Astro Node SSR)
+After=network.target
+
+[Service]
+Type=simple
+User=simpleciso
+Group=simpleciso
+WorkingDirectory=/var/www/simpleciso-website
+EnvironmentFile=/var/www/simpleciso-website/.env.production
+ExecStart=/usr/bin/node ./dist/server/entry.mjs
+Restart=on-failure
+RestartSec=5
+
+Environment=HOST=127.0.0.1
+Environment=PORT=4321
+Environment=NODE_ENV=production
+
+# Bind to localhost only — Caddy fronts public traffic on 80/443.
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/simpleciso-website
+
+[Install]
+WantedBy=multi-user.target

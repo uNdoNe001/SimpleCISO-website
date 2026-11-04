@@ -1,0 +1,49 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-[color:var(--color-border)] mt-12 pt-12 pb-10">
+  <div class="container-tight">
+    <div class="foot-grid">
+      <div>
+        <a href="/" class="inline-flex items-center" aria-label="SimpleCISO home">
+          <img src="/simpleciso-wordmark.png" alt="SimpleCISO" width="400" height="75" class="h-8 w-auto" loading="lazy" decoding="async" />
+        </a>
+        <p class="mt-4 text-[13.5px] text-[color:var(--color-fg-dim)] max-w-[36ch] leading-relaxed">
+          AI-assisted, human-governed security program management.
+          A product of <a href="https://www.summitcyber.io" class="hover:text-[color:var(--color-fg)] underline-offset-2 underline decoration-[color:var(--color-border-strong)]">Summit Cyber</a>.
+        </p>
+      </div>
+
+      <div>
+        <h5>Product</h5>
+        <a href="/platform">Platform</a>
+        <a href="/platform#how">How it works</a>
+        <a href="/platform#frameworks">Frameworks</a>
+        <a href="/platform#governance">Governance model</a>
+      </div>
+
+      <div>
+        <h5>Summit Cyber</h5>
+        <a href="https://www.summitcyber.io">About Summit</a>
+        <a href="https://simplesec.ai">SimpleSec</a>
+        <a href="/contact">Request a demo</a>
+      </div>
+
+      <div>
+        <h5>Company</h5>
+        <a href="/contact">Contact</a>
+        <a href="mailto:info@simpleciso.ai">info@simpleciso.ai</a>
+        <a href="/privacy">Privacy</a>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© {year} Summit Cyber · SimpleCISO</span>
+      <span class="font-mono">simpleciso.ai</span>
+    </div>
+    <p class="mt-4 text-xs font-mono text-[color:var(--color-fg-dim)] text-center md:text-left">
+      SimpleCISO reports readiness and evidence coverage — it does not assert that any organization is certified or compliant. Material decisions require human sign-off.
+    </p>
+  </div>
+</footer>

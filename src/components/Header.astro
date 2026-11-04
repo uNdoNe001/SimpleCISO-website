@@ -1,0 +1,48 @@
+---
+const { pathname } = Astro.url;
+const navItems = [
+  { href: "/platform", label: "Platform" },
+  { href: "/platform#how", label: "How it works" },
+  { href: "/platform#governance", label: "Governance" },
+  { href: "/contact", label: "Contact" },
+];
+---
+
+<header class="nav-v2">
+  <div class="container-tight flex items-center gap-7 h-16">
+    <a href="/" class="flex items-center" aria-label="SimpleCISO — CISO work, simplified">
+      <img
+        src="/simpleciso-wordmark.png"
+        alt="SimpleCISO"
+        width="400"
+        height="75"
+        class="h-8 w-auto"
+        decoding="async"
+      />
+    </a>
+
+    <nav class="hidden md:flex items-center gap-6 ml-2">
+      {navItems.map(({ href, label }) => {
+        const base = href.split("#")[0];
+        const active = pathname === base || (base !== "/" && pathname.startsWith(base));
+        return (
+          <a
+            href={href}
+            class={`text-sm font-medium transition-colors ${active ? "text-[color:var(--color-brand-blue)]" : "text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg)]"}`}
+          >
+            {label}
+          </a>
+        );
+      })}
+    </nav>
+
+    <div class="ml-auto flex items-center gap-3.5">
+      <a href="https://www.summitcyber.io" class="hidden sm:inline-flex text-sm font-medium text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg)]">
+        Summit Cyber
+      </a>
+      <a href="/contact" class="btn-primary text-sm px-3.5 py-1.5">
+        Request a demo
+      </a>
+    </div>
+  </div>
+</header>

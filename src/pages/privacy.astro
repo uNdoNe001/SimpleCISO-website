@@ -1,0 +1,58 @@
+---
+import Layout from "../layouts/Layout.astro";
+const updated = "November 2026";
+---
+
+<Layout
+  title="Privacy notice — SimpleCISO"
+  description="How SimpleCISO (Summit Cyber) handles information you send through this website."
+  noindex={true}
+>
+  <section class="container-tight pt-16 pb-24 max-w-2xl">
+    <span class="chip">Privacy</span>
+    <h1 class="mt-4 text-4xl font-extrabold tracking-tight">Privacy notice</h1>
+    <p class="mt-3 text-sm font-mono text-[color:var(--color-fg-dim)]">Last updated {updated}</p>
+
+    <div class="mt-8 space-y-6 text-[15.5px] leading-relaxed text-[color:var(--color-fg-muted)]">
+      <p>
+        This notice covers the SimpleCISO marketing website at <span class="font-mono">simpleciso.ai</span>,
+        operated by Summit Cyber. It does not cover the SimpleCISO product application, which is
+        governed by its own agreement.
+      </p>
+
+      <div>
+        <h2 class="text-xl font-semibold text-[color:var(--color-fg)]">What we collect</h2>
+        <p class="mt-2">
+          When you submit the contact form, we collect the name, work email, company, interest, and
+          message you provide, plus your IP address (used only for spam rate-limiting). We do not use
+          third-party advertising trackers on this site.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold text-[color:var(--color-fg)]">How we use it</h2>
+        <p class="mt-2">
+          We use your submission solely to respond to your request and to follow up about SimpleCISO.
+          Submissions are delivered to our team inbox by email. We do not sell your data.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold text-[color:var(--color-fg)]">Retention &amp; your choices</h2>
+        <p class="mt-2">
+          We keep contact messages only as long as needed to handle your enquiry and our ongoing
+          relationship. To ask what we hold, or to have it deleted, email
+          <a href="mailto:info@simpleciso.ai" class="text-[color:var(--color-brand-blue)] hover:underline underline-offset-4">info@simpleciso.ai</a>.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold text-[color:var(--color-fg)]">Contact</h2>
+        <p class="mt-2">
+          Questions about this notice? Email
+          <a href="mailto:info@simpleciso.ai" class="text-[color:var(--color-brand-blue)] hover:underline underline-offset-4">info@simpleciso.ai</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

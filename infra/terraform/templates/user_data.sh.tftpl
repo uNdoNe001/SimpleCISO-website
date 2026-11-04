@@ -1,0 +1,111 @@
+#!/bin/bash
+# SimpleCISO website box bootstrap (Amazon Linux 2023).
+# Installs Node 22 + Caddy, clones the site, renders .env.production from SSM,
+# builds, and starts the Astro SSR service behind Caddy (auto-TLS).
+set -euxo pipefail
+exec > >(tee /var/log/user-data.log) 2>&1
+
+REGION="${region}"
+REPO="${repo_url}"
+SSM_PREFIX="${ssm_prefix}"
+CADDY_VERSION="${caddy_version}"
+NOTIFY_TO="${notify_to}"
+APPDIR="/var/www/simpleciso-website"
+
+echo "=== packages ==="
+dnf update -y
+dnf install -y git tar gzip libcap
+
+echo "=== Node.js 22 ==="
+curl -fsSL https://rpm.nodesource.com/setup_22.x | bash -
+dnf install -y nodejs
+node -v
+
+echo "=== Caddy $CADDY_VERSION ==="
+curl -fsSL -o /tmp/caddy.tar.gz \
+  "https://github.com/caddyserver/caddy/releases/download/v$CADDY_VERSION/caddy_$${CADDY_VERSION}_linux_amd64.tar.gz"
+tar -xzf /tmp/caddy.tar.gz -C /tmp caddy
+install -m 0755 /tmp/caddy /usr/bin/caddy
+/usr/sbin/setcap cap_net_bind_service=+ep /usr/bin/caddy || true
+id caddy &>/dev/null || useradd --system --create-home --home-dir /var/lib/caddy --shell /usr/sbin/nologin caddy
+mkdir -p /etc/caddy
+
+echo "=== service user + checkout ==="
+id simpleciso &>/dev/null || useradd --system --home-dir "$APPDIR" --shell /usr/sbin/nologin simpleciso
+mkdir -p "$APPDIR"
+if [ ! -d "$APPDIR/.git" ]; then
+  git clone "$REPO" "$APPDIR"
+else
+  git -C "$APPDIR" pull --ff-only || true
+fi
+chown -R simpleciso:simpleciso "$APPDIR"
+
+echo "=== env renderer (reads SMTP secrets from SSM) ==="
+cat > /usr/local/bin/simpleciso-render-env.sh <<RENDER
+#!/bin/bash
+set -euo pipefail
+REGION="$REGION"
+PREFIX="$SSM_PREFIX"
+NOTIFY_TO="$NOTIFY_TO"
+APPDIR="$APPDIR"
+get() { aws ssm get-parameter --region "\$REGION" --name "\$PREFIX/\$1" --with-decryption --query Parameter.Value --output text 2>/dev/null || echo ""; }
+SMTP_USER="\$(get smtp_user)"
+SMTP_PASSWORD="\$(get smtp_password)"
+ENABLED="false"
+if [ -n "\$SMTP_PASSWORD" ] && [ "\$SMTP_PASSWORD" != "CHANGEME" ] && [ -n "\$SMTP_USER" ] && [ "\$SMTP_USER" != "CHANGEME" ]; then
+  ENABLED="true"
+fi
+umask 077
+cat > "\$APPDIR/.env.production" <<EOF
+SMTP_ENABLED=\$ENABLED
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=\$SMTP_USER
+SMTP_PASSWORD=\$SMTP_PASSWORD
+SMTP_FROM=SimpleCISO <\$SMTP_USER>
+CONTACT_NOTIFY_TO=\$NOTIFY_TO
+EOF
+chown simpleciso:simpleciso "\$APPDIR/.env.production"
+chmod 600 "\$APPDIR/.env.production"
+echo "rendered .env.production (SMTP_ENABLED=\$ENABLED)"
+RENDER
+chmod 0755 /usr/local/bin/simpleciso-render-env.sh
+/usr/local/bin/simpleciso-render-env.sh
+
+echo "=== build ==="
+sudo -u simpleciso bash -lc "cd '$APPDIR' && npm ci && npm run build"
+
+echo "=== systemd: site service ==="
+cp "$APPDIR/deploy/simpleciso-website.service" /etc/systemd/system/simpleciso-website.service
+
+echo "=== systemd: caddy ==="
+cp "$APPDIR/deploy/Caddyfile" /etc/caddy/Caddyfile
+cat > /etc/systemd/system/caddy.service <<'EOF'
+[Unit]
+Description=Caddy
+Documentation=https://caddyserver.com/docs/
+After=network.target network-online.target
+Requires=network-online.target
+
+[Service]
+Type=notify
+User=caddy
+Group=caddy
+ExecStart=/usr/bin/caddy run --environ --config /etc/caddy/Caddyfile
+ExecReload=/usr/bin/caddy reload --config /etc/caddy/Caddyfile --force
+TimeoutStopSec=5s
+LimitNOFILE=1048576
+PrivateTmp=true
+ProtectSystem=full
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable --now simpleciso-website
+systemctl enable --now caddy
+
+echo "=== done ==="
+systemctl --no-pager status simpleciso-website | head -8 || true
