@@ -107,10 +107,18 @@ resource "aws_iam_role_policy_attachment" "ssm_core" {
 }
 
 data "aws_iam_policy_document" "instance_inline" {
+  # The box now hosts all five consolidated marketing sites, which read shared
+  # secrets under /summit/* (SMTP creds at /summit/smtp/*, the push-to-deploy
+  # GitHub token at /summit/deploy/github_token) in addition to this site's own
+  # /simpleciso/website/* params. GetParametersByPath is needed for prefix reads.
   statement {
-    sid       = "ReadSmtpSecrets"
-    actions   = ["ssm:GetParameter", "ssm:GetParameters"]
-    resources = ["arn:aws:ssm:${var.region}:${local.account_id}:parameter${var.ssm_prefix}/*"]
+    sid     = "ReadSiteSecrets"
+    actions = ["ssm:GetParameter", "ssm:GetParameters", "ssm:GetParametersByPath"]
+    resources = [
+      "arn:aws:ssm:${var.region}:${local.account_id}:parameter${var.ssm_prefix}/*",
+      "arn:aws:ssm:${var.region}:${local.account_id}:parameter/summit",
+      "arn:aws:ssm:${var.region}:${local.account_id}:parameter/summit/*",
+    ]
   }
   statement {
     sid       = "DecryptSecrets"
@@ -169,6 +177,18 @@ resource "aws_instance" "box" {
     aws_ssm_parameter.smtp_password,
     aws_iam_instance_profile.instance,
   ]
+
+  # This box is a long-lived PET: all five consolidated marketing sites are
+  # deployed onto it (checkouts, systemd units, 4 GB swap), updated via SSM /
+  # GitHub Actions push-to-deploy — NOT by rebuilding from user_data. The
+  # `ami` is sourced from the "latest AL2023" SSM param, which keeps advancing,
+  # and the user_data template evolves; without this guard a `terraform apply`
+  # would see that drift and DESTROY+RECREATE the box, wiping every site.
+  # Ignore both so apply can manage the EIP / SG / IAM without touching the
+  # instance. To intentionally rebuild, remove the relevant line and apply.
+  lifecycle {
+    ignore_changes = [ami, user_data]
+  }
 
   tags = { Name = local.name }
 }

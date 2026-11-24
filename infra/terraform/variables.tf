@@ -11,9 +11,9 @@ variable "availability_zone" {
 }
 
 variable "instance_type" {
-  description = "EC2 instance type. t3.small has enough memory for the Astro build."
+  description = "EC2 instance type. t3.medium: hosts all five consolidated marketing sites (plus 4 GB swap)."
   type        = string
-  default     = "t3.small"
+  default     = "t3.medium"
 }
 
 variable "root_volume_size" {
@@ -48,11 +48,12 @@ variable "notify_to" {
 
 variable "use_eip" {
   description = <<-EOT
-    Allocate an Elastic IP for a permanent address. Default false because the
-    account is currently at its EIP quota — the box uses its auto-assigned public
-    IP instead (stable while the instance stays running; changes only on
-    stop/start). Set true once an EIP is free or the quota is raised, then apply.
+    Back the box with a dedicated Elastic IP for a permanent public address.
+    True since 2026-11-23: EIP 18.227.175.47 (eipalloc-0c42be6e11631d5f1) is
+    imported into aws_eip.box[0] and all 10 marketing hostnames resolve to it.
+    This EIP is owned solely by THIS stack — do not borrow another stack's EIP
+    for this box (an earlier outage came from sharing simpleciso-test's EIP).
   EOT
   type        = bool
-  default     = false
+  default     = true
 }
